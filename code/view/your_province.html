@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>微信好友地区分布</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 1000px;height:600px; position:absolute;left:50%;top:50%;transform:translateX(-50%) translateY(-50%);"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '微信好友地区分布图'
+            },
+            tooltip: {},
+			//
+            legend: {
+                data:['人数']
+            },
+            xAxis: {
+                data: ["其他地区", "Clare", "黑龙江", "England", "山西", "New York", "澳门", "吉林", "宁夏", "湖北", "北京", "江西", "山东", "Dubayy", "广东", "Tokyo", "Yuen Long", "Lyon", "河北", "甘肃", "Amersfoort", "重庆", "辽宁", "安徽", "Paris", "四川", "😂😂😂", "Carlow", "内蒙古", "陕西", "Victoria", "贵州", "Penza", "河南", "Munich", "Upper Austria", "浙江", "福建", "Vienna", "江苏", "广西", "Offaly", "Donegal", "湖南"],
+				            },
+            yAxis: {},
+            series: [{
+                name: '人数',
+                type: 'bar',
+                data: [128, 1, 2, 1, 3, 1, 2, 2, 1, 2, 9, 4, 5, 2, 10, 1, 1, 1, 4, 2, 1, 3, 1, 3, 2, 6, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 5, 13, 1, 14, 3, 1, 1, 108]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
