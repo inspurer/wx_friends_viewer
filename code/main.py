@@ -10,6 +10,7 @@ import itchat
 import json
 import os
 import re
+from pyecharts import Geo
 
 class wechat_friends_viewer():
     def __init__(self):
@@ -78,9 +79,45 @@ class wechat_friends_viewer():
                 dic_city[key] = 1
             else:
                 dic_city[key] += 1
+
+        data = []
+        max_value = 0
         for key,value in dic_city.items():
+            # 其他地区
+            if len(key) == 0:
+                continue
+            # 过滤英文等非市级
+            if len(key) >= 3:
+                continue
+
+            # 没有找到判断字符串是不是城市的接口，暂时先这样过滤吧
+            if key == "海淀" or key == "南开" or key == "徐汇":
+                continue
+            data.append(tuple((key,value)))
+            if value > max_value:
+                max_value = value
             print(key,value)
+        print(data)
         # city的可视化过程类似province
+        ## 高级可视化
+        # 安装 pyecharts
+        # pip install  pyecharts
+        # 安装 独立的地图包
+        # pip install echarts-countries-pypkg
+        # pip install echarts-china-provinces-pypkg
+        # pip install echarts-china-cities-pypkg
+        # may need pip install pyecharts_snapshot
+
+        geo = Geo("微信好友城市分布图", "posted by inspurer", title_color="#000",
+                  title_pos="center", width=1000,
+                  height=600, background_color='#ffffff')
+        attr, value = geo.cast(data)
+        geo.add("", attr, value, visual_range=[1, max_value], visual_range_color=['#d54d2b', '#FF0000'],
+                maptype='china', visual_text_color="#f00",
+                symbol_size=18, is_visualmap=True,geo_normal_color="#22DDDD",geo_emphasis_color="#0033FF")
+        geo.render("view/your_city.html")  # 生成html文件
+        os.startfile(os.getcwd() + "/view/your_city.html")
+
 
     def sign_wordcloud(self):
         all_sign = ""
@@ -102,6 +139,7 @@ class wechat_friends_viewer():
         self.province_viewer()
         self.sex_viewer()
         self.sign_wordcloud()
+        self.city_viewer()
 
 if __name__ =="__main__":
     wechat_friends_viewer().run()
